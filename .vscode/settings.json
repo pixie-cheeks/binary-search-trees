@@ -1,0 +1,7 @@
+{
+  "typescript.validate.enable": false,
+  "javascript.validate.enable": false,
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "eslint.codeActionsOnSave.rules": ["!prefer-const", "*"]
+}

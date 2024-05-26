@@ -1,0 +1,26 @@
+{
+  "env": {
+    "browser": false
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "extends": ["airbnb-base", "prettier"],
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-console": "off",
+
+    "lines-between-class-members": [
+      "error",
+      {
+        "enforce": [
+          { "blankLine": "always", "prev": "*", "next": "method" },
+          { "blankLine": "always", "prev": "method", "next": "*" },
+          { "blankLine": "never", "prev": "field", "next": "field" }
+        ]
+      }
+    ],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "import/extensions": ["error", "ignorePackages"]
+  }
+}
