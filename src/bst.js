@@ -184,6 +184,37 @@ class Tree {
     if (root.right) this.#postOrderHelp(callback, root.right);
     callback(root);
   }
+
+  height(node) {
+    if (!node.right && !node.left) return 0;
+
+    let leftHeight = 0;
+    let rightHeight = 0;
+
+    if (node.left) leftHeight += 1 + this.height(node.left);
+    if (node.right) rightHeight += 1 + this.height(node.right);
+
+    return leftHeight > rightHeight ? leftHeight : rightHeight;
+  }
+
+  depth(node) {
+    return Tree.#findDepth(node.data, this.root);
+  }
+
+  /* eslint-disable no-param-reassign */
+  static #findDepth(value, root, edges = 0) {
+    if (root === null || root.data === value) return 0;
+
+    if (root.data > value) {
+      edges += Tree.#findDepth(value, root.left, edges);
+    }
+    if (root.data < value) {
+      edges += Tree.#findDepth(value, root.right, edges);
+    }
+
+    return edges + 1;
+  }
+  /* eslint-enable no-param-reassign */
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -200,5 +231,8 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 };
 
 const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+// const myTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
 prettyPrint(myTree.root);
+
+console.log(myTree.depth(myTree.find(1)));
