@@ -186,15 +186,12 @@ class Tree {
   }
 
   height(node) {
-    if (!node.right && !node.left) return 0;
+    if (node == null) return 0;
+    const increment = node === this.root ? 0 : 1;
 
-    let leftHeight = 0;
-    let rightHeight = 0;
-
-    if (node.left) leftHeight += 1 + this.height(node.left);
-    if (node.right) rightHeight += 1 + this.height(node.right);
-
-    return leftHeight > rightHeight ? leftHeight : rightHeight;
+    return (
+      Math.max(this.height(node.left), this.height(node.right)) + increment
+    );
   }
 
   depth(node) {
@@ -215,24 +212,26 @@ class Tree {
     return edges + 1;
   }
   /* eslint-enable no-param-reassign */
+
+  isBalanced() {
+    return this.#isBalancedRec(this.root);
+  }
+
+  #isBalancedRec(node) {
+    if (node === null) return true;
+
+    const leftHeight = this.height(node.left);
+    const rightHeight = this.height(node.right);
+    if (node.data === 2) console.log(leftHeight, rightHeight);
+
+    return (
+      Math.abs(leftHeight - rightHeight) <= 1 &&
+      this.#isBalancedRec(node.left) &&
+      this.#isBalancedRec(node.right)
+    );
+  }
+
+  rebalance() {
+    this.root = Tree.buildTree(this.inOrder());
+  }
 }
-
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-  if (node === null) {
-    return;
-  }
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-  }
-  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-  }
-};
-
-const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-// const myTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-
-prettyPrint(myTree.root);
-
-console.log(myTree.depth(myTree.find(1)));
