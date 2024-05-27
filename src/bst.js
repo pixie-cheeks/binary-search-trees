@@ -1,3 +1,5 @@
+import Queue from './queue.js';
+
 const createNode = (data) => ({
   data,
   left: null,
@@ -87,6 +89,8 @@ class Tree {
 
     return root;
   }
+
+  levelOrder(callback) {}
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
