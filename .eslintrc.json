@@ -21,6 +21,7 @@
       }
     ],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-    "import/extensions": ["error", "ignorePackages"]
+    "import/extensions": ["error", "ignorePackages"],
+    "no-param-reassign": ["error", { "props": false }]
   }
 }

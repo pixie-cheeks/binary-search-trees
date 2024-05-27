@@ -4,26 +4,52 @@ const createNode = (data) => ({
   right: null,
 });
 
-const buildTree = (array) => {
-  if (array.length === 0) return null;
+class Tree {
+  constructor(inputArray) {
+    // Filter duplicates and sort the array
+    this.root = Tree.buildTree(
+      inputArray
+        .filter((element, index, array) => array.indexOf(element) === index)
+        .sort((a, b) => a - b),
+    );
+  }
 
-  const mid = Math.floor(array.length / 2);
-  const root = createNode(array[mid]);
+  static buildTree(array) {
+    if (array.length === 0) return null;
 
-  root.left = buildTree(array.slice(0, mid));
-  root.right = buildTree(array.slice(mid + 1));
+    const mid = Math.floor(array.length / 2);
+    const root = createNode(array[mid]);
 
-  return root;
-};
+    root.left = Tree.buildTree(array.slice(0, mid));
+    root.right = Tree.buildTree(array.slice(mid + 1));
 
-const createTree = (inputArray) => {
-  // Filter duplicates and sort the array
-  const cleanedArray = inputArray
-    .filter((element, index, array) => array.indexOf(element) === index)
-    .sort((a, b) => a - b);
+    return root;
+  }
 
-  return { root: buildTree(cleanedArray) };
-};
+  insert(value) {
+    return Tree.#insertRec(value, this.root);
+  }
+
+  static #insertRec(value, root) {
+    if (root === null) {
+      return createNode(value);
+    }
+
+    if (value > root.data) {
+      root.right = Tree.#insertRec(value, root.right);
+    } else if (value < root.data) {
+      // Explicit if-clause for duplicates
+      root.left = Tree.#insertRec(value, root.left);
+    }
+
+    return root;
+  }
+
+  deleteItem(value) {
+    console.log(value);
+    return this.root;
+  }
+}
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
   if (node === null) {
@@ -38,6 +64,7 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
-const myTree = createTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
+myTree.insert(69);
 prettyPrint(myTree.root);
