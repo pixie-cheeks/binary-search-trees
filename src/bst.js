@@ -152,6 +152,38 @@ class Tree {
     callback(root);
     if (root.right) this.#inOrderHelp(callback, root.right);
   }
+
+  preOrder(callback) {
+    if (callback) return this.#preOrderHelp(callback);
+
+    const values = [];
+    this.#preOrderHelp((node) => values.push(node.data));
+
+    return values;
+  }
+
+  #preOrderHelp(callback, root = this.root) {
+    if (root === null) return;
+    callback(root);
+    if (root.left) this.#preOrderHelp(callback, root.left);
+    if (root.right) this.#preOrderHelp(callback, root.right);
+  }
+
+  postOrder(callback) {
+    if (callback) return this.#postOrderHelp(callback);
+
+    const values = [];
+    this.#postOrderHelp((node) => values.push(node.data));
+
+    return values;
+  }
+
+  #postOrderHelp(callback, root = this.root) {
+    if (root === null) return;
+    if (root.left) this.#postOrderHelp(callback, root.left);
+    if (root.right) this.#postOrderHelp(callback, root.right);
+    callback(root);
+  }
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -170,5 +202,3 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 prettyPrint(myTree.root);
-
-console.log(myTree.inOrder());
