@@ -46,8 +46,46 @@ class Tree {
   }
 
   deleteItem(value) {
-    console.log(value);
-    return this.root;
+    this.root = Tree.#deleteItemRec(value, this.root);
+  }
+
+  static #deleteItemRec(value, root) {
+    if (root === null) return root;
+
+    if (value === root.data) {
+      if (!root.right && !root.left) return null;
+      if (!root.right) return root.left;
+      if (!root.left) return root.right;
+
+      let replacement = root.right;
+      while (replacement.left) {
+        replacement = replacement.left;
+      }
+      root.data = replacement.data;
+      root.right = Tree.#deleteItemRec(replacement.data, root.right);
+    }
+
+    if (value > root.data) root.right = Tree.#deleteItemRec(value, root.right);
+    else root.left = Tree.#deleteItemRec(value, root.left);
+
+    return root;
+  }
+
+  find(value) {
+    return Tree.#findRec(value, this.root);
+  }
+
+  static #findRec(value, root) {
+    if (root === null) return root;
+
+    if (value > root.data) {
+      return Tree.#findRec(value, root.right);
+    }
+    if (value < root.data) {
+      return Tree.#findRec(value, root.left);
+    }
+
+    return root;
   }
 }
 
@@ -66,5 +104,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
 const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
-myTree.insert(69);
 prettyPrint(myTree.root);
