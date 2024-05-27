@@ -90,7 +90,61 @@ class Tree {
     return root;
   }
 
-  levelOrder(callback) {}
+  levelOrder(callback, recursive = false) {
+    let method = null;
+    if (recursive) {
+      method = Tree.#recLevelOrderHelper;
+    } else {
+      method = Tree.#levelOrderIter;
+    }
+
+    if (callback) return method(this.root, callback);
+
+    const values = [];
+    method(this.root, (node) => values.push(node.data));
+    return values;
+  }
+
+  static #levelOrderIter(root, callback) {
+    if (root === null) return;
+
+    const queue = new Queue();
+    queue.enqueue(root);
+
+    while (!queue.isEmpty()) {
+      const currentNode = queue.dequeue();
+
+      if (currentNode.left) queue.enqueue(currentNode.left);
+      if (currentNode.right) queue.enqueue(currentNode.right);
+
+      callback(currentNode);
+    }
+  }
+
+  /* 
+  if (q is empty) q(root)
+  callback(dq)
+  if (root.left) q(root.left)
+  if (root.right) q(root.right)
+  if (q is not empty) recurse(q)
+
+  */
+
+  static #recLevelOrderHelper(root, callback) {
+    const queue = new Queue();
+    queue.enqueue(root);
+    Tree.#levelOrderRec(callback, queue);
+  }
+
+  static #levelOrderRec(callback, queue) {
+    const root = queue.dequeue();
+    callback(root);
+
+    if (root.left) queue.enqueue(root.left);
+    if (root.right) queue.enqueue(root.right);
+
+    if (!queue.isEmpty()) Tree.#levelOrderRec(callback, queue);
+  }
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -109,3 +163,6 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 prettyPrint(myTree.root);
+
+console.log(myTree.levelOrder());
+console.log(myTree.levelOrder(null, true));

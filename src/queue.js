@@ -11,13 +11,16 @@ class Queue {
   }
 
   dequeue() {
-    if (this.frontIndex === this.backIndex)
-      throw new Error("Can't dequeue an empty queue");
+    if (this.isEmpty()) throw new Error("Can't dequeue an empty queue");
 
     const item = this.items[this.frontIndex];
     delete this.items[this.frontIndex];
     this.frontIndex += 1;
     return item;
+  }
+
+  isEmpty() {
+    return this.frontIndex === this.backIndex;
   }
 }
 
