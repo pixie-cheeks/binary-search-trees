@@ -222,7 +222,6 @@ class Tree {
 
     const leftHeight = this.height(node.left);
     const rightHeight = this.height(node.right);
-    if (node.data === 2) console.log(leftHeight, rightHeight);
 
     return (
       Math.abs(leftHeight - rightHeight) <= 1 &&
@@ -235,3 +234,5 @@ class Tree {
     this.root = Tree.buildTree(this.inOrder());
   }
 }
+
+export default Tree;
