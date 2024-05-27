@@ -121,15 +121,6 @@ class Tree {
     }
   }
 
-  /* 
-  if (q is empty) q(root)
-  callback(dq)
-  if (root.left) q(root.left)
-  if (root.right) q(root.right)
-  if (q is not empty) recurse(q)
-
-  */
-
   static #recLevelOrderHelper(root, callback) {
     const queue = new Queue();
     queue.enqueue(root);
@@ -144,6 +135,22 @@ class Tree {
     if (root.right) queue.enqueue(root.right);
 
     if (!queue.isEmpty()) Tree.#levelOrderRec(callback, queue);
+  }
+
+  inOrder(callback) {
+    if (callback) return this.#inOrderHelp(callback);
+
+    const values = [];
+    this.#inOrderHelp((node) => values.push(node.data));
+
+    return values;
+  }
+
+  #inOrderHelp(callback, root = this.root) {
+    if (root === null) return;
+    if (root.left) this.#inOrderHelp(callback, root.left);
+    callback(root);
+    if (root.right) this.#inOrderHelp(callback, root.right);
   }
 }
 
@@ -164,5 +171,4 @@ const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 prettyPrint(myTree.root);
 
-console.log(myTree.levelOrder());
-console.log(myTree.levelOrder(null, true));
+console.log(myTree.inOrder());
